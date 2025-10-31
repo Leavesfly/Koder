@@ -1,279 +1,250 @@
-# Koder - Java重构版
+# Koder - 智能终端 AI 助手
 
-基于Java 17 + Spring Boot 3.x + Maven重构的Kode终端AI助手项目。
+<div align="center">
 
-## 项目结构
+一个基于 Java 的强大终端 AI 助手，支持多模型接入、智能代理、CLI 交互与 MCP 协议集成。
+
+[![Java](https://img.shields.io/badge/Java-17+-orange.svg)](https://www.oracle.com/java/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2+-green.svg)](https://spring.io/projects/spring-boot)
+[![Maven](https://img.shields.io/badge/Maven-3.9+-blue.svg)](https://maven.apache.org/)
+
+</div>
+
+## ✨ 核心特性
+
+- 🤖 **多 LLM 支持** - 支持 DeepSeek、通义千问(Qwen)、Ollama 等多种大语言模型
+- 🛠️ **智能工具系统** - 内置近 20 种工具，包括文件操作、命令执行、Web 搜索等
+- 🎯 **代理系统** - 内置 7 个专用智能代理，支持任务驱动执行
+- 🔌 **MCP 集成** - 支持 Model Context Protocol 协议扩展上下文能力
+- 💬 **流式响应** - 实时输出 LLM 推理结果
+- 🖥️ **REPL 交互** - 友好的命令行交互界面
+
+## 📦 项目结构
 
 ```
-Koder/
-├── koder-core/      # 核心模块（配置、权限、上下文、消息）
-├── koder-models/    # 模型适配模块（适配器工厂、提供商实现）
-├── koder-tools/     # 工具系统模块（工具接口、内置工具实现）
-├── koder-cli/       # CLI交互模块（REPL、命令系统、终端渲染）
-├── koder-mcp/       # MCP集成模块（客户端、传输协议）
-└── koder-agent/     # 智能代理模块（加载器、执行器）
+koder/
+├── koder-core      # 核心配置、权限、上下文、消息系统
+├── koder-tools     # 内置工具实现（文件操作、命令执行、搜索等）
+├── koder-cli       # REPL 命令系统与终端交互入口
+├── koder-mcp       # Model Context Protocol 客户端与服务集成
+├── koder-agent     # 智能代理加载与执行系统
+├── scripts/        # 构建与运行脚本
+└── doc/            # 项目文档
 ```
 
-## 技术栈
+## 🚀 快速开始
 
-- **Java**: 17
-- **构建工具**: Maven 3.9+
-- **框架**: Spring Boot 3.2+
-- **AI集成**: Spring AI 1.0.0-M1
-- **终端UI**: JLine 3.x
-- **JSON处理**: Jackson 2.x
-- **HTTP客户端**: Spring WebClient
-- **日志**: SLF4J + Logback
+### 环境要求
 
-## 核心特性
+- **JDK**: 17 或更高版本
+- **Maven**: 3.9 或更高版本
+- **操作系统**: macOS / Linux / Windows
 
-- ✅ **多模型支持**: 集成DeepSeek、通义千问(Qwen)、Ollama三种LLM
-- ✅ **智能工具系统**: 提供文件操作、命令执行、搜索、LLM对话等工具
-- ✅ **CLI交互**: 强大的REPL命令系统
-- ✅ **MCP集成**: 支持Model Context Protocol
-- ✅ **代理系统**: 内置七个专用智能代理
-- ✅ **流式响应**: 支持实时流式输出
+### 安装步骤
 
-## 快速开始
+1. **克隆项目**
+```bash
+git clone <repository-url>
+cd Koder
+```
 
-### 1. 编译项目
-
+2. **设置 JAVA_HOME** (如果未设置)
 ```bash
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home
-cd Koder
+```
+
+3. **编译项目**
+```bash
 mvn clean compile -DskipTests
 ```
 
-### 2. 运行Koder
+### 运行方式
 
-**方式一：单个JAR文件（推荐、便携）** ✨
-
-```bash
-# 首次需要打包
-./build-jar.sh
-
-# 运行
-java -jar koder-cli/target/koder.jar
-# 或使用快捷脚本
-./run-jar.sh
-```
-
-打包后的JAR文件（~50MB）可以独立运行，无需其他依赖，可复制到任何机器使用：
-
-```bash
-# 复制JAR到目标机器
-cp koder-cli/target/koder.jar ~/bin/
-
-# 直接运行
-java -jar ~/bin/koder.jar
-```
-
-**方式二：系统级安装（全局命令）** 🚀
-
-```bash
-# 打包并安装
-./build-jar.sh
-./install.sh
-
-# 在任何目录下运行
-koder
-```
-
-安装后，`koder`命令将可在任何目录下使用，如同系统命令。
-
-**方式三：使用快速启动脚本（开发）**
-
+#### 方式 1: 使用快速启动脚本 (推荐)
 ```bash
 ./run-koder.sh
 ```
 
-**方式四：使用Maven插件（开发）**
+#### 方式 2: 构建 JAR 后运行
+```bash
+./build-jar.sh
+java -jar koder-cli/target/koder.jar
+```
 
+#### 方式 3: 使用 Maven 直接运行
 ```bash
 mvn spring-boot:run -pl koder-cli -DskipTests
 ```
 
-### 3. 使用Koder
-
-启动后进入REPL界面：
-
-```
-╔══════════════════════════════════════════╗
-║        Koder - AI编程助手 (Java版)      ║
-╚══════════════════════════════════════════╝
-
-输入 /help 查看帮助
-输入 /exit 退出程序
-
-koder> 
-```
-
-可用命令：
-- `/help` - 显示帮助信息
-- `/llm` - 与LLM对话（支持DeepSeek、Qwen、Ollama）
-- `/model` - 查看或切换AI模型
-- `/agents` - 管理智能代理
-- `/config` - 配置管理
-- `/mcp` - MCP服务器管理
-- `/exit` - 退出程序
-
-## LLM集成快速开始
-
-Koder已集成Spring AI框架，支持多种LLM提供商。
-
-### 1. 配置API密钥
-
-**DeepSeek（推荐，性价比高）**
-
+#### 方式 4: 全局安装
 ```bash
-export DEEPSEEK_API_KEY=your_api_key
+./install.sh
+koder  # 在任意目录下运行
 ```
 
-**通义千问（中文能力强）**
+## 🔧 配置说明
 
+### LLM 提供商配置
+
+在 `application.yml` 或 `application-llm.yml` 中配置：
+
+```yaml
+llm:
+  providers:
+    deepseek:
+      enabled: true
+      api-key: ${DEEPSEEK_API_KEY}
+      base-url: https://api.deepseek.com
+      models:
+        - name: deepseek-chat
+          alias: deepseek
+    
+    qwen:
+      enabled: true
+      api-key: ${QWEN_API_KEY}
+      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      models:
+        - name: qwen-max
+          alias: qwen
+    
+    ollama:
+      enabled: true
+      base-url: http://localhost:11434
+      models:
+        - name: llama2
+          alias: ollama
+```
+
+### MCP 服务器配置
+
+在 `application.yml` 中配置 MCP 服务器：
+
+```yaml
+mcp:
+  servers:
+    - name: filesystem
+      command: npx
+      args:
+        - -y
+        - @modelcontextprotocol/server-filesystem
+        - /path/to/workspace
+```
+
+## 📚 内置工具
+
+Koder 提供丰富的内置工具：
+
+| 工具 | 功能描述 |
+|------|---------|
+| `BashTool` | 执行 Bash 命令 |
+| `FileReadTool` | 读取文件内容 |
+| `FileWriteTool` | 写入文件 |
+| `FileEditTool` | 编辑文件 |
+| `MultiEditTool` | 批量编辑多个文件 |
+| `GrepTool` | 文件内容搜索 |
+| `GlobTool` | 文件路径匹配 |
+| `LSTool` | 列出目录内容 |
+| `WebSearchTool` | Web 搜索 |
+| `URLFetcherTool` | 获取 URL 内容 |
+| `MemoryReadTool` | 读取记忆 |
+| `MemoryWriteTool` | 写入记忆 |
+| `TaskTool` | 任务管理 |
+| `ThinkTool` | 思考工具 |
+| `NotebookEditTool` | 笔记编辑 |
+| `TodoWriteTool` | 待办事项 |
+
+## 🤖 智能代理
+
+内置多个专业领域的智能代理：
+
+- **AI Engineer** - AI 工程师代理
+- **Backend Architect** - 后端架构师代理
+- **Senior Backend Architect** - 高级后端架构师代理
+
+代理配置文件位于：`koder-cli/src/main/resources/.koder/agents/`
+
+## 💡 使用示例
+
+### 基础对话
 ```bash
-export QWEN_API_KEY=your_api_key
+koder> 你好，请介绍一下自己
 ```
 
-**Ollama（本地部署，免费）**
-
+### 执行命令
 ```bash
-# 安装Ollama
-curl -fsSL https://ollama.ai/install.sh | sh
-
-# 拉取模型
-ollama pull llama2
-
-# 启动服务
-ollama serve
+koder> 帮我列出当前目录的文件
 ```
 
-### 2. 使用LLM功能
-
+### 文件操作
 ```bash
-# 基本对话
-/llm 解释一下什么是依赖注入
-
-# 指定提供商
-/llm -p qwen 请用中文回答：什么是Spring Boot
-
-# 带系统提示词
-/llm -s "你是一个Java专家" 如何优化这段代码
-
-# 查看服务状态
-/llm --status
-
-# 健康检查
-/llm --health
+koder> 读取 README.md 文件的内容
 ```
 
-### 3. 详细文档
-
-- [LLM快速开始](doc/LLM_QUICKSTART.md) - 5分钟快速上手指南
-- [LLM集成指南](doc/LLM_INTEGRATION_GUIDE.md) - 完整配置和使用指南
-- [配置示例](doc/application-llm.yml) - 详细的配置示例
-
-## 模块集成
-
-详细的模块集成说明请参考 [MODULE_INTEGRATION.md](./MODULE_INTEGRATION.md)
-
-### 集成架构
-
-```
-KoderCliApplication (启动入口)
-  ↓
-ModuleIntegrationInitializer (Order=1)
-  ├→ 初始化工具系统 (ToolExecutor)
-  ├→ 初始化代理系统 (AgentRegistry)
-  ├→ 初始化MCP系统 (MCPClientManager)
-  ├→ 初始化LLM系统 (LlmManager)
-  └→ 验证集成完整性
-  ↓
-REPLEngine (启动REPL)
-  ├→ CommandRegistry (命令路由)
-  ├→ AIQueryService (AI查询)
-  └→ TerminalRenderer (终端渲染)
-```
-
-### 代理执行流程
-
-```
-用户输入 → /agents run <type> <task>
-  ↓
-AgentsCommand → 解析命令参数
-  ↓
-AgentExecutor → 代理执行器
-  ├→ 1. 获取代理配置 (AgentRegistry)
-  ├→ 2. 准备上下文 (ToolUseContext)
-  ├→ 3. 过滤工具权限 (ToolExecutor)
-  ├→ 4. 选择LLM模型 (LlmManager)
-  ├→ 5. 构建LLM请求 (LlmChatRequest)
-  ├→ 6. 调用LLM推理 (DeepSeek/Qwen/Ollama)
-  └→ 7. 处理响应、执行工具
-  ↓
-返回结果 → AgentResponse
-```
-
-### 核心组件
-
-- **ToolExecutor**: 管理所有工具，支持动态注册
-- **AgentRegistry**: 加载和管理智能代理
-- **MCPClientManager**: 管理MCP服务器连接
-- **CommandRegistry**: 注册和路由CLI命令
-- **AIQueryService**: 处理AI查询和流式响应
-
-## 构建项目
-
+### 切换模型
 ```bash
-# 编译所有模块
-mvn clean install
-
-# 运行CLI
-cd koder-cli
-mvn spring-boot:run
-
-# 打包可执行JAR
-mvn clean package
+koder> /model deepseek
 ```
 
-## 包结构
+## 🛠️ 开发指南
 
-所有代码统一使用 `io.leavesfly.koder` 包路径：
+### 编译项目
+```bash
+mvn clean compile -DskipTests
+```
 
-- `io.leavesfly.koder.core` - 核心功能
-- `io.leavesfly.koder.model` - 模型适配
-- `io.leavesfly.koder.tool` - 工具系统
-- `io.leavesfly.koder.cli` - CLI交互
-- `io.leavesfly.koder.mcp` - MCP集成
-- `io.leavesfly.koder.agent` - 智能代理
+### 运行测试
+```bash
+mvn test
+```
 
-## 开发说明
+### 打包项目
+```bash
+mvn clean package -DskipTests
+```
 
-### 环境要求
+### 添加新工具
 
-- JDK 17+
-- Maven 3.9+
+1. 在 `koder-tools` 模块创建新的工具类，继承 `AbstractTool`
+2. 实现 `execute()` 方法
+3. 在 `ToolSystemConfiguration` 中注册工具
 
-### IDE推荐配置
+### 添加新代理
 
-- 启用Lombok注解处理器
-- 配置代码格式化为Java标准
-- 启用Java 17语法支持（Record、Switch表达式等）
+在 `koder-cli/src/main/resources/.koder/agents/` 目录下创建新的 Markdown 配置文件。
 
-## 配置文件
+## 📖 文档
 
-### 全局配置
+更多详细文档请查看 `doc/` 目录：
 
-位置：`~/.koder.json`
+- [用户手册](doc/USER_MANUAL.md)
+- [Bash 模式指南](doc/BASH_MODE_GUIDE.md)
+- [模块集成说明](doc/MODULE_INTEGRATION.md)
+- [电商开发指南](doc/ECOMMERCE_DEVELOPMENT_GUIDE.md)
 
-包含模型配置、主题设置、MCP服务器等全局设置。
+## 🔍 技术栈
 
-### 项目配置
+- **Java 17** - 编程语言
+- **Spring Boot 3.2+** - 应用框架
+- **Spring AI 1.0.0-M4** - AI 集成
+- **JLine 3.x** - 终端 UI
+- **Jackson 2.17.1** - JSON 处理
+- **Maven** - 构建工具
+- **Logback** - 日志系统
 
-位置：`.koder.json`
+## 🤝 贡献
 
-包含工具授权、上下文文件、项目级MCP配置等。
+欢迎贡献代码、报告问题或提出建议！
 
-## License
+## 📄 许可证
 
-Apache-2.0
+[添加您的许可证信息]
+
+## 📧 联系方式
+
+如有问题或建议，请联系项目维护者。
+
+---
+
+<div align="center">
+Made with ❤️ by the Koder Team
+</div>
