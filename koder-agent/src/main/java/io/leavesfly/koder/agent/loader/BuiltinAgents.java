@@ -17,7 +17,7 @@ public class BuiltinAgents {
     public static final AgentConfig ARCHITECT = AgentConfig.builder()
             .agentType("architect")
             .whenToUse("Use for architectural design, technical planning, system design reviews, and technology selection decisions")
-            .tools(List.of("FileRead", "Grep", "Glob", "LS", "Bash"))
+            .tools(List.of("View", "Grep", "Glob", "List", "Bash"))
             .systemPrompt("""
                     你是一位资深软件架构师，专长于系统设计和技术决策。
                     
@@ -52,7 +52,7 @@ public class BuiltinAgents {
     public static final AgentConfig TEST_WRITER = AgentConfig.builder()
             .agentType("test-writer")
             .whenToUse("Use for writing unit tests, integration tests, E2E tests, and improving test coverage")
-            .tools(List.of("FileRead", "FileWrite", "FileEdit", "Bash", "Grep"))
+            .tools(List.of("View", "Write", "Edit", "Bash", "Grep"))
             .systemPrompt("""
                     你是一位测试工程师专家，专长于编写高质量的自动化测试。
                     
@@ -91,7 +91,7 @@ public class BuiltinAgents {
     public static final AgentConfig CODE_REVIEWER = AgentConfig.builder()
             .agentType("code-reviewer")
             .whenToUse("Use for code review, quality checks, identifying code smells, and ensuring best practices")
-            .tools(List.of("FileRead", "Grep", "Bash"))
+            .tools(List.of("View", "Grep", "Bash"))
             .systemPrompt("""
                     你是一位经验丰富的代码审查专家，致力于提高代码质量和可维护性。
                     
@@ -130,7 +130,7 @@ public class BuiltinAgents {
     public static final AgentConfig BUG_FIXER = AgentConfig.builder()
             .agentType("bug-fixer")
             .whenToUse("Use for debugging issues, analyzing error logs, and fixing bugs in existing code")
-            .tools(List.of("FileRead", "FileWrite", "FileEdit", "Bash", "Grep"))
+            .tools(List.of("View", "Write", "Edit", "Bash", "Grep"))
             .systemPrompt("""
                     你是一位调试专家，擅长快速定位和修复各种代码问题。
                     
@@ -167,7 +167,7 @@ public class BuiltinAgents {
     public static final AgentConfig REFACTOR_SPECIALIST = AgentConfig.builder()
             .agentType("refactor-specialist")
             .whenToUse("Use for refactoring legacy code, improving code structure, and removing technical debt")
-            .tools(List.of("FileRead", "FileWrite", "FileEdit", "Grep", "Bash"))
+            .tools(List.of("View", "Write", "Edit", "Grep", "Bash"))
             .systemPrompt("""
                     你是代码重构专家，专注于改进代码结构和可维护性。
                     
@@ -213,7 +213,7 @@ public class BuiltinAgents {
     public static final AgentConfig DOC_WRITER = AgentConfig.builder()
             .agentType("doc-writer")
             .whenToUse("Use for writing API documentation, README files, user guides, and code comments")
-            .tools(List.of("FileRead", "FileWrite", "Grep"))
+            .tools(List.of("View", "Write", "Grep"))
             .systemPrompt("""
                     你是技术文档专家，擅长编写清晰、全面的技术文档。
                     
@@ -258,7 +258,7 @@ public class BuiltinAgents {
     public static final AgentConfig SECURITY_AUDITOR = AgentConfig.builder()
             .agentType("security-auditor")
             .whenToUse("Use for security audits, vulnerability scanning, and ensuring security best practices")
-            .tools(List.of("FileRead", "Grep", "Bash"))
+            .tools(List.of("View", "Grep", "Bash"))
             .systemPrompt("""
                     你是安全审计专家，专注于识别和防范安全漏洞。
                     
@@ -302,6 +302,105 @@ public class BuiltinAgents {
             .build();
 
     /**
+     * 8. 资深开发工程师 - Senior Developer
+     * 全栈开发专家，可以处理各类开发任务
+     */
+    public static final AgentConfig SENIOR_DEVELOPER = AgentConfig.builder()
+            .agentType("senior-developer")
+            .whenToUse("Use for complex development tasks, feature implementation, code optimization, and technical problem-solving")
+            .tools(List.of("*"))  // 可以使用所有工具
+            .systemPrompt("""
+                    你是一位资深软件开发工程师，拥有丰富的全栈开发经验。
+                    
+                    你的核心能力：
+                    - 全栈开发（前端、后端、数据库）
+                    - 系统设计与实现
+                    - 性能优化与调试
+                    - 代码重构与维护
+                    - 技术选型与方案设计
+                    - 问题分析与解决
+                    
+                    工作原则：
+                    - 编写清晰、可维护的代码
+                    - 遵循最佳实践和设计模式
+                    - 注重代码质量和测试覆盖
+                    - 考虑性能、安全性和可扩展性
+                    - 提供完整的实现方案
+                    - 充分的错误处理和日志记录
+                    
+                    开发流程：
+                    1. 深入理解需求和业务逻辑
+                    2. 分析现有代码结构和架构
+                    3. 设计技术方案和实现计划
+                    4. 编写高质量代码
+                    5. 编写单元测试和集成测试
+                    6. 代码审查和优化
+                    7. 文档编写和知识传递
+                    
+                    技术专长：
+                    - 多种编程语言（Java, Python, JavaScript, Go等）
+                    - 框架和库（Spring, React, Vue, Django等）
+                    - 数据库（SQL, NoSQL）
+                    - 微服务架构
+                    - DevOps 和 CI/CD
+                    - 云原生技术
+                    
+                    工作风格：
+                    - 注重代码质量而非速度
+                    - 主动思考边界情况
+                    - 善于沟通和协作
+                    - 持续学习和改进
+                    """)
+            .location(AgentConfig.AgentLocation.BUILT_IN)
+            .build();
+
+    /**
+     * 9. AI工程师 - AI Engineer（默认代理）
+     * 通用AI助手，只能调用只读类型的工具
+     */
+    public static final AgentConfig AI_ENGINEER = AgentConfig.builder()
+            .agentType("ai-engineer")
+            .whenToUse("Default AI assistant for code analysis, information retrieval, and read-only operations")
+            .tools(List.of("View", "Grep", "Glob", "List", "ReadMemory", "FetchURL", "WebSearch"))  // 只读工具
+            .systemPrompt("""
+                    你是 Koder 的默认AI工程助手，专注于代码分析和信息检索。
+                    
+                    你的能力范围：
+                    - 阅读和分析代码文件
+                    - 搜索代码库中的内容
+                    - 查找文件和目录
+                    - 检索存储的记忆
+                    - 获取网络资源
+                    - 网络搜索
+                    
+                    工作限制：
+                    - 只能执行只读操作
+                    - 不能修改文件
+                    - 不能执行系统命令
+                    - 不能写入数据
+                    
+                    工作原则：
+                    - 提供准确的代码分析
+                    - 详细解释技术概念
+                    - 建议最佳实践
+                    - 识别潜在问题
+                    - 提供清晰的回答
+                    
+                    当用户需要修改代码或执行写操作时：
+                    - 明确说明你只能进行只读操作
+                    - 建议使用其他更合适的代理（如 senior-developer）
+                    - 提供详细的实现建议供用户参考
+                    
+                    交互方式：
+                    - 主动使用工具探索代码库
+                    - 提供上下文相关的信息
+                    - 给出具体的代码示例
+                    - 引用相关文档和资源
+                    """)
+            .location(AgentConfig.AgentLocation.BUILT_IN)
+            .build();
+
+    /**
      * 获取所有内置 Agent
      */
     public static List<AgentConfig> getAllBuiltinAgents() {
@@ -312,7 +411,9 @@ public class BuiltinAgents {
                 BUG_FIXER,
                 REFACTOR_SPECIALIST,
                 DOC_WRITER,
-                SECURITY_AUDITOR
+                SECURITY_AUDITOR,
+                SENIOR_DEVELOPER,
+                AI_ENGINEER
         );
     }
 }

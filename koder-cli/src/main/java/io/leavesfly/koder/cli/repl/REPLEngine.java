@@ -1,9 +1,11 @@
 package io.leavesfly.koder.cli.repl;
 
+import io.leavesfly.koder.agent.executor.AgentExecutor;
 import io.leavesfly.koder.cli.command.CommandContext;
 import io.leavesfly.koder.cli.command.CommandRegistry;
 import io.leavesfly.koder.cli.command.CommandResult;
 import io.leavesfly.koder.cli.terminal.TerminalRenderer;
+import io.leavesfly.koder.tool.ToolUseContext;
 import io.leavesfly.koder.tool.impl.BashTool;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +26,15 @@ public class REPLEngine {
 
     private final CommandRegistry commandRegistry;
     private final TerminalRenderer renderer;
-
     private final BashTool bashTool;
+    private final AgentExecutor agentExecutor;
 
     private REPLSession session;
     private LineReader lineReader;
     private boolean running = false;
+
+    // 默认使用的代理
+    private static final String DEFAULT_AGENT = "ai-engineer";
 
     /**
      * 启动REPL
@@ -237,8 +242,32 @@ public class REPLEngine {
             StringBuilder fullResponse = new StringBuilder();
             AtomicBoolean hasError = new AtomicBoolean(false);
 
-            // todo 调用AI查询
+            // 调用AI查询 - 使用AgentExecutor执行默认代理
+            ToolUseContext context = ToolUseContext.builder()
+                .messageId(UUID.randomUUID().toString())
+                .agentId(DEFAULT_AGENT)
+                .safeMode(false)
+                .build();
 
+            // 执行代理查询
+            agentExecutor.executeAgent(DEFAULT_AGENT, input, context)
+                .doOnNext(chunk -> {
+                    // 实时输出响应块（使用terminal writer直接输出）
+                    renderer.getTerminal().writer().print(chunk);
+                    renderer.getTerminal().flush();
+                    fullResponse.append(chunk);
+                })
+                .doOnError(error -> {
+                    hasError.set(true);
+                    renderer.printError("\n\u53d1生错误: " + error.getMessage());
+                    log.error("处理用户消息失败", error);
+                })
+                .doOnComplete(() -> {
+                    if (!hasError.get()) {
+                        renderer.println(""); // 换行
+                    }
+                })
+                .blockLast(); // 阻塞等待完成
 
         } catch (Exception e) {
             renderer.printError("\n发生错误: " + e.getMessage());

@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 /**
@@ -706,10 +707,46 @@ public class AgentsCommand implements Command {
      * 执行代理任务
      */
     private CommandResult executeAgent(AgentConfig agent, String task, CommandContext context) {
+        context.getOutput().println("\n正在执行代理: " + agent.getAgentType());
+        context.getOutput().println("任务: " + task + "\n");
 
-        //todo 直接依赖AgentExecutor的实现
+        try {
+            // 使用AgentExecutor执行代理任务
+            io.leavesfly.koder.tool.ToolUseContext toolContext = io.leavesfly.koder.tool.ToolUseContext.builder()
+                .messageId(UUID.randomUUID().toString())
+                .agentId(agent.getAgentType())
+                .safeMode(false)
+                .build();
 
-        return null;
+            StringBuilder responseBuilder = new StringBuilder();
+            AtomicBoolean hasError = new AtomicBoolean(false);
+
+            agentExecutor.executeAgent(agent.getAgentType(), task, toolContext)
+                .doOnNext(chunk -> {
+                    context.getOutput().println(chunk);
+                    responseBuilder.append(chunk);
+                })
+                .doOnError(error -> {
+                    hasError.set(true);
+                    log.error("代理执行失败", error);
+                })
+                .doOnComplete(() -> {
+                    if (!hasError.get()) {
+                        context.getOutput().success("\n\u2705 代理执行完成");
+                    }
+                })
+                .blockLast(); // 阻塞等待完成
+
+            if (hasError.get()) {
+                return CommandResult.failure("代理执行失败");
+            }
+
+            return CommandResult.success(responseBuilder.toString());
+
+        } catch (Exception e) {
+            log.error("执行代理失败", e);
+            return CommandResult.failure("执行失败: " + e.getMessage());
+        }
     }
 
     /**

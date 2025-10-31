@@ -27,3 +27,28 @@ koder:
   # Think工具
   think:
     enabled: true
+
+  # LLM提供商配置
+  llm:
+    # DeepSeek配置
+    deepseek:
+      enabled: true
+      api-key: ${DEEPSEEK_API_KEY:}
+      base-url: ${DEEPSEEK_BASE_URL:https://api.deepseek.com}
+      default-model: deepseek-chat
+      timeout: 60
+
+    # 通义千问配置
+    qwen:
+      enabled: true
+      api-key: ${QWEN_API_KEY:}
+      base-url: ${QWEN_BASE_URL:https://dashscope.aliyuncs.com/compatible-mode}
+      default-model: qwen-max
+      timeout: 60
+
+    # Ollama配置
+    ollama:
+      enabled: true
+      base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
+      default-model: llama2
+      timeout: 120

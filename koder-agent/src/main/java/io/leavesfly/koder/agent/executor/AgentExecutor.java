@@ -3,6 +3,7 @@ package io.leavesfly.koder.agent.executor;
 import io.leavesfly.koder.agent.AgentConfig;
 import io.leavesfly.koder.agent.AgentRegistry;
 import io.leavesfly.koder.agent.ToolCallAgent;
+import io.leavesfly.koder.agent.llm.LLMProviderRegistry;
 import io.leavesfly.koder.tool.Tool;
 import io.leavesfly.koder.tool.ToolResponse;
 import io.leavesfly.koder.tool.ToolUseContext;
@@ -35,6 +36,7 @@ public class AgentExecutor {
 
     private final AgentRegistry agentRegistry;
     private final ToolExecutor toolExecutor;
+    private final LLMProviderRegistry llmProviderRegistry;
 
     // 会话历史管理(sessionId -> 会话历史)
     private final Map<String, ConversationHistory> sessionHistories = new ConcurrentHashMap<>();
@@ -94,7 +96,7 @@ public class AgentExecutor {
                 k -> new ConversationHistory()
         );
 
-        return new ToolCallAgent(config, allowedTools, history, toolExecutor);
+        return new ToolCallAgent(config, allowedTools, history, toolExecutor, llmProviderRegistry);
     }
 
     /**
