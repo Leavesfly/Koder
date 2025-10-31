@@ -2,8 +2,8 @@ package io.leavesfly.koder.agent;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.leavesfly.koder.agent.executor.AgentExecutor;
-import io.leavesfly.koder.agent.llm.LLMProvider;
-import io.leavesfly.koder.agent.llm.LLMProviderRegistry;
+import io.leavesfly.koder.core.llm.LLMProvider;
+import io.leavesfly.koder.core.llm.LLMProviderRegistry;
 import io.leavesfly.koder.tool.Tool;
 import io.leavesfly.koder.tool.ToolResponse;
 import io.leavesfly.koder.tool.ToolUseContext;

@@ -1,4 +1,4 @@
-package io.leavesfly.koder.agent.llm;
+package io.leavesfly.koder.core.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

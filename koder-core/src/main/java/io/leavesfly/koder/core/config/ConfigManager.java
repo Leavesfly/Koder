@@ -164,7 +164,6 @@ public class ConfigManager {
             .theme("dark")
             .verbose(false)
             .stream(true)
-            .primaryProvider(ProviderType.ANTHROPIC)
             .preferredNotifChannel("iterm2")
             .hasCompletedOnboarding(false)
             .hasAcknowledgedCostThreshold(false)
@@ -210,23 +209,7 @@ public class ConfigManager {
         this.projectConfig = config;
     }
     
-    /**
-     * 根据模型名称查找模型配置
-     */
-    public Optional<ModelProfile> findModelProfile(String modelName) {
-        return globalConfig.getModelProfiles().stream()
-            .filter(profile -> profile.getModelName().equals(modelName))
-            .findFirst();
-    }
-    
-    /**
-     * 获取当前激活的模型配置列表
-     */
-    public java.util.List<ModelProfile> getActiveModelProfiles() {
-        return globalConfig.getModelProfiles().stream()
-            .filter(ModelProfile::isActive)
-            .toList();
-    }
+
     
     /**
      * 检查工具是否已授权

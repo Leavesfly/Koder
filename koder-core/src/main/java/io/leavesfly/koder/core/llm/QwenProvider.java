@@ -1,4 +1,4 @@
-package io.leavesfly.koder.agent.llm;
+package io.leavesfly.koder.core.llm;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,23 +9,23 @@ import reactor.core.publisher.Mono;
 import java.util.*;
 
 /**
- * DeepSeek LLM提供商实现
+ * 通义千问 LLM提供商实现
  */
 @Slf4j
-public class DeepSeekProvider implements LLMProvider {
+public class QwenProvider implements LLMProvider {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private final String apiKey;
     private final String baseUrl;
 
-    public DeepSeekProvider(String apiKey, String baseUrl) {
+    public QwenProvider(String apiKey, String baseUrl) {
         this.apiKey = apiKey;
-        this.baseUrl = baseUrl != null ? baseUrl : "https://api.deepseek.com";
+        this.baseUrl = baseUrl != null ? baseUrl : "https://dashscope.aliyuncs.com/compatible-mode";
     }
 
     @Override
     public String getProviderName() {
-        return "deepseek";
+        return "qwen";
     }
 
     @Override
@@ -39,12 +39,12 @@ public class DeepSeekProvider implements LLMProvider {
             .build();
 
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("model", modelName != null ? modelName : "deepseek-chat");
+        requestBody.put("model", modelName != null ? modelName : "qwen-max");
         requestBody.put("messages", messages);
         requestBody.put("stream", false);
         requestBody.put("tools", tools);
 
-        log.debug("DeepSeek请求: model={}", modelName);
+        log.debug("Qwen请求: model={}", modelName);
 
         return client.post()
             .uri("/v1/chat/completions")
@@ -52,13 +52,13 @@ public class DeepSeekProvider implements LLMProvider {
             .retrieve()
             .bodyToMono(String.class)
             .map(this::parseResponse)
-            .doOnError(e -> log.error("DeepSeek API调用失败", e));
+            .doOnError(e -> log.error("Qwen API调用失败", e));
     }
 
     @Override
     public boolean supports(String modelName) {
         if (modelName == null) return false;
-        return modelName.toLowerCase().contains("deepseek");
+        return modelName.toLowerCase().contains("qwen");
     }
 
     private LLMResponse parseResponse(String responseBody) {
@@ -91,7 +91,7 @@ public class DeepSeekProvider implements LLMProvider {
             
             return new LLMResponse("", Collections.emptyList());
         } catch (Exception e) {
-            log.error("解析DeepSeek响应失败", e);
+            log.error("解析Qwen响应失败", e);
             return new LLMResponse("Error: " + e.getMessage(), Collections.emptyList());
         }
     }

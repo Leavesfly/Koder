@@ -1,8 +1,9 @@
-package io.leavesfly.koder.agent.llm;
+package io.leavesfly.koder.core.config;
 
+import io.leavesfly.koder.core.llm.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class LLMProviderAutoConfiguration {
 
+    @Qualifier("LLMProviderConfig")
     private final LLMProviderConfig config;
 
     /**
@@ -29,8 +31,8 @@ public class LLMProviderAutoConfiguration {
         // 注册DeepSeek
         if (config.getDeepseek().isEnabled() && config.getDeepseek().getApiKey() != null) {
             DeepSeekProvider deepSeek = new DeepSeekProvider(
-                config.getDeepseek().getApiKey(),
-                config.getDeepseek().getBaseUrl()
+                    config.getDeepseek().getApiKey(),
+                    config.getDeepseek().getBaseUrl()
             );
             registry.registerProvider(deepSeek);
             log.info("DeepSeek提供商已启用");
@@ -39,8 +41,8 @@ public class LLMProviderAutoConfiguration {
         // 注册通义千问
         if (config.getQwen().isEnabled() && config.getQwen().getApiKey() != null) {
             QwenProvider qwen = new QwenProvider(
-                config.getQwen().getApiKey(),
-                config.getQwen().getBaseUrl()
+                    config.getQwen().getApiKey(),
+                    config.getQwen().getBaseUrl()
             );
             registry.registerProvider(qwen);
             log.info("Qwen提供商已启用");
@@ -49,7 +51,7 @@ public class LLMProviderAutoConfiguration {
         // 注册Ollama
         if (config.getOllama().isEnabled()) {
             OllamaProvider ollama = new OllamaProvider(
-                config.getOllama().getBaseUrl()
+                    config.getOllama().getBaseUrl()
             );
             registry.registerProvider(ollama);
             log.info("Ollama提供商已启用");
