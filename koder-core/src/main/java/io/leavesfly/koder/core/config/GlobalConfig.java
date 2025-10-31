@@ -109,13 +109,7 @@ public class GlobalConfig {
     @Builder.Default
     private Map<String, List<String>> customApiKeyResponses = new HashMap<>();
     
-    /**
-     * 主要提供商
-     */
-    @JsonProperty("primaryProvider")
-    @Builder.Default
-    private ProviderType primaryProvider = ProviderType.ANTHROPIC;
-    
+
     /**
      * 最大Token数
      */
@@ -154,12 +148,7 @@ public class GlobalConfig {
     @Builder.Default
     private Boolean stream = true;
     
-    /**
-     * 模型配置列表
-     */
-    @JsonProperty("modelProfiles")
-    @Builder.Default
-    private List<ModelProfile> modelProfiles = new ArrayList<>();
+
     
     /**
      * 模型指针

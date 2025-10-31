@@ -1,6 +1,9 @@
 package io.leavesfly.koder.agent.examples;
 
-import io.leavesfly.koder.agent.llm.*;
+import io.leavesfly.koder.core.llm.DeepSeekProvider;
+import io.leavesfly.koder.core.llm.LLMProviderRegistry;
+import io.leavesfly.koder.core.llm.OllamaProvider;
+import io.leavesfly.koder.core.llm.QwenProvider;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;

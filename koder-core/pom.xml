@@ -23,7 +23,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
-        
+
+        <!-- Spring Boot Reactor(响应式编程) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+
         <!-- Spring Boot配置处理器 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
