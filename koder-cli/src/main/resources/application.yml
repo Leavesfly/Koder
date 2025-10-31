@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: koder-cli
+
+  main:
+    web-application-type: none  # 非Web应用
+    banner-mode: off            # 关闭横幅
+
+logging:
+  level:
+    root: INFO
+    io.leavesfly.koder: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+# Koder配置
+koder:
+  # 配置文件路径
+  config:
+    global-path: ${user.home}/.koder/config.json
+    project-path: ${user.dir}/.koder.json
+  
+  # 工具系统
+  tools:
+    list-enabled: true
+  
+  # Think工具
+  think:
+    enabled: true

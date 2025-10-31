@@ -1,0 +1,58 @@
+# Koder Core模块配置
+
+spring:
+  application:
+    name: koder-core
+  
+  # Jackson配置
+  jackson:
+    serialization:
+      indent-output: true
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+    default-property-inclusion: non_null
+
+# Koder配置
+koder:
+  # AI配置
+  ai:
+    enabled: true
+    default-provider: deepseek
+    
+    # DeepSeek配置
+    deepseek:
+      enabled: true
+      api-key: ${DEEPSEEK_API_KEY:}
+      base-url: https://api.deepseek.com
+      model: deepseek-chat
+      temperature: 0.7
+      max-tokens: 4096
+      timeout: 60
+    
+    # 通义千问配置
+    qwen:
+      enabled: true
+      api-key: ${QWEN_API_KEY:}
+      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      model: qwen-turbo
+      temperature: 0.7
+      max-tokens: 4096
+      timeout: 60
+    
+    # Ollama配置
+    ollama:
+      enabled: false
+      base-url: http://localhost:11434
+      model: llama2
+      temperature: 0.7
+      max-tokens: 4096
+      timeout: 120
+
+# 日志配置
+logging:
+  level:
+    io.leavesfly.koder: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

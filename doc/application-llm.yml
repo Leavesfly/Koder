@@ -1,0 +1,141 @@
+# Koder LLM配置示例
+# 复制此文件到 application.yml 或 application-local.yml
+
+koder:
+  ai:
+    # 是否启用LLM功能
+    enabled: true
+    
+    # 默认使用的LLM提供商: deepseek, qwen, ollama
+    default-provider: deepseek
+    
+    # ========================================
+    # DeepSeek配置
+    # ========================================
+    deepseek:
+      # 是否启用DeepSeek服务
+      enabled: true
+      
+      # API密钥（推荐通过环境变量DEEPSEEK_API_KEY设置）
+      # 获取地址: https://platform.deepseek.com/
+      api-key: ${DEEPSEEK_API_KEY:}
+      
+      # API基础URL（通常不需要修改）
+      base-url: https://api.deepseek.com
+      
+      # 模型名称
+      # 可选值: deepseek-chat, deepseek-coder
+      model: deepseek-chat
+      
+      # 温度参数 (0.0-1.0)
+      # 0.0: 最确定性，适合代码分析、数据提取
+      # 0.7: 平衡，适合通用对话
+      # 1.0: 最有创意，适合头脑风暴、代码生成
+      temperature: 0.7
+      
+      # 最大生成token数
+      # deepseek-chat支持最大32K上下文
+      max-tokens: 4096
+      
+      # 请求超时时间（秒）
+      timeout: 60
+    
+    # ========================================
+    # 通义千问配置
+    # ========================================
+    qwen:
+      # 是否启用通义千问服务
+      enabled: true
+      
+      # API密钥（推荐通过环境变量QWEN_API_KEY设置）
+      # 获取地址: https://dashscope.console.aliyun.com/
+      api-key: ${QWEN_API_KEY:}
+      
+      # API基础URL（阿里云DashScope兼容OpenAI格式）
+      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      
+      # 模型名称
+      # 可选值: 
+      #   qwen-turbo: 快速响应，适合日常对话
+      #   qwen-plus: 增强版，推理能力更强
+      #   qwen-max: 旗舰版，最强性能
+      model: qwen-turbo
+      
+      # 温度参数 (0.0-1.0)
+      temperature: 0.7
+      
+      # 最大生成token数
+      max-tokens: 4096
+      
+      # 请求超时时间（秒）
+      timeout: 60
+    
+    # ========================================
+    # Ollama配置（本地部署）
+    # ========================================
+    ollama:
+      # 是否启用Ollama服务（默认禁用）
+      # 需要先安装Ollama: https://ollama.ai/
+      enabled: false
+      
+      # Ollama服务地址
+      # 本地部署默认: http://localhost:11434
+      # Docker部署示例: http://ollama:11434
+      base-url: http://localhost:11434
+      
+      # 模型名称
+      # 常用模型:
+      #   llama2: Meta的Llama 2
+      #   mistral: Mistral AI的模型
+      #   codellama: 专注代码的Llama
+      #   deepseek-coder: DeepSeek开源代码模型
+      # 使用前需先拉取: ollama pull llama2
+      model: llama2
+      
+      # 温度参数 (0.0-1.0)
+      temperature: 0.7
+      
+      # 最大生成token数
+      max-tokens: 4096
+      
+      # 请求超时时间（秒）
+      # Ollama本地推理较慢，建议设置较长超时
+      timeout: 120
+
+# ========================================
+# 使用建议
+# ========================================
+#
+# 1. 生产环境配置
+#    - 通过环境变量设置API密钥
+#    - 适当调整timeout和max-tokens
+#    - 启用监控和日志
+#
+# 2. 开发环境配置
+#    - 可以在application-local.yml中覆盖配置
+#    - 使用Ollama进行本地测试
+#
+# 3. 性能优化
+#    - 根据任务选择合适的模型
+#    - 调整temperature控制输出质量
+#    - 限制max-tokens控制成本
+#
+# 4. 成本控制
+#    - DeepSeek性价比最高
+#    - 通义千问按量付费
+#    - Ollama完全免费（本地部署）
+#
+# ========================================
+
+# 日志配置（可选）
+logging:
+  level:
+    # LLM服务日志
+    io.leavesfly.koder.core.ai: INFO
+    
+    # Spring AI框架日志
+    org.springframework.ai: WARN
+    
+    # 详细调试时启用
+    # io.leavesfly.koder.core.ai: DEBUG
+    # org.springframework.ai: DEBUG
