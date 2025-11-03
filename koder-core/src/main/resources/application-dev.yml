@@ -1,0 +1,65 @@
+# Koder开发环境配置
+
+spring:
+  jackson:
+    serialization:
+      indent-output: true
+
+koder:
+  ai:
+    # 开发环境默认使用DeepSeek
+    default-provider: deepseek
+    
+    deepseek:
+      enabled: true
+      temperature: 0.7
+      max-tokens: 4096
+      timeout: 60
+    
+    qwen:
+      enabled: true
+      temperature: 0.7
+      max-tokens: 4096
+      timeout: 60
+    
+    ollama:
+      enabled: true
+      base-url: http://localhost:11434
+      model: llama2
+      temperature: 0.7
+      max-tokens: 4096
+      timeout: 120
+
+  # 工具系统
+  tools:
+    bash:
+      enabled: true
+      allow-dangerous-commands: false  # 开发环境也要谨慎
+    
+    file:
+      enabled: true
+      max-file-size: 10485760  # 10MB
+    
+    web-search:
+      enabled: true
+      max-results: 10
+
+  # MCP配置
+  mcp:
+    enabled: true
+    auto-discover: true
+    servers: []
+
+# 日志配置 - 开发环境详细日志
+logging:
+  level:
+    root: INFO
+    io.leavesfly.koder: DEBUG
+    io.leavesfly.koder.agent: TRACE
+    io.leavesfly.koder.tool: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/koder-dev.log
+    max-size: 10MB
+    max-history: 7

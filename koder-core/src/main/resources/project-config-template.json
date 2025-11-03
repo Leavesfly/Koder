@@ -1,0 +1,92 @@
+{
+  "_comment": "Koder项目配置文件模板 - 默认位置: <项目根目录>/.koder.json",
+  
+  "project": {
+    "name": "my-project",
+    "description": "项目描述",
+    "type": "java",
+    "version": "1.0.0"
+  },
+  
+  "llm": {
+    "override_global": false,
+    "default_provider": "deepseek",
+    "temperature": 0.7,
+    "max_tokens": 4096
+  },
+  
+  "context": {
+    "include_patterns": [
+      "src/**/*.java",
+      "src/**/*.xml",
+      "pom.xml",
+      "README.md"
+    ],
+    "exclude_patterns": [
+      "target/**",
+      "*.class",
+      "*.jar",
+      ".git/**",
+      "node_modules/**"
+    ],
+    "max_context_files": 50,
+    "max_file_size": 1048576
+  },
+  
+  "tools": {
+    "bash": {
+      "enabled": true,
+      "working_directory": "./",
+      "allowed_commands": ["mvn", "java", "git"],
+      "timeout": 60
+    },
+    "file": {
+      "enabled": true,
+      "allowed_paths": ["src", "doc", "scripts"],
+      "max_file_size": 5242880
+    }
+  },
+  
+  "mcp": {
+    "enabled": true,
+    "servers": [
+      {
+        "name": "filesystem",
+        "type": "stdio",
+        "command": "npx",
+        "args": ["-y", "@modelcontextprotocol/server-filesystem", "./src"],
+        "env": {}
+      }
+    ]
+  },
+  
+  "agents": {
+    "default_agent": "ai-engineer",
+    "custom_agents": [
+      ".koder/agents/custom-agent.md"
+    ]
+  },
+  
+  "build": {
+    "tool": "maven",
+    "commands": {
+      "clean": "mvn clean",
+      "compile": "mvn compile",
+      "test": "mvn test",
+      "package": "mvn package",
+      "run": "mvn spring-boot:run"
+    }
+  },
+  
+  "git": {
+    "auto_commit": false,
+    "commit_message_template": "feat: ${description}",
+    "exclude_from_context": [".git/**"]
+  },
+  
+  "memory": {
+    "enabled": true,
+    "storage_path": ".koder/memory",
+    "max_entries": 1000
+  }
+}

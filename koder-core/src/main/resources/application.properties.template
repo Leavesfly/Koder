@@ -1,0 +1,59 @@
+# Koder配置文件模板 (properties格式)
+# 将此文件复制为 application.properties 并填写实际配置
+
+# ==================== Spring配置 ====================
+spring.application.name=koder
+spring.main.banner-mode=off
+
+# ==================== LLM提供商配置 ====================
+# DeepSeek
+koder.ai.deepseek.enabled=true
+koder.ai.deepseek.api-key=${DEEPSEEK_API_KEY}
+koder.ai.deepseek.base-url=https://api.deepseek.com
+koder.ai.deepseek.model=deepseek-chat
+koder.ai.deepseek.temperature=0.7
+koder.ai.deepseek.max-tokens=4096
+koder.ai.deepseek.timeout=60
+
+# 通义千问
+koder.ai.qwen.enabled=true
+koder.ai.qwen.api-key=${QWEN_API_KEY}
+koder.ai.qwen.base-url=https://dashscope.aliyuncs.com/compatible-mode/v1
+koder.ai.qwen.model=qwen-turbo
+koder.ai.qwen.temperature=0.7
+koder.ai.qwen.max-tokens=4096
+koder.ai.qwen.timeout=60
+
+# Ollama
+koder.ai.ollama.enabled=false
+koder.ai.ollama.base-url=http://localhost:11434
+koder.ai.ollama.model=llama2
+koder.ai.ollama.temperature=0.7
+koder.ai.ollama.max-tokens=4096
+koder.ai.ollama.timeout=120
+
+# ==================== 默认提供商 ====================
+koder.ai.default-provider=deepseek
+
+# ==================== 工具配置 ====================
+koder.tools.bash.enabled=true
+koder.tools.bash.allow-dangerous-commands=false
+koder.tools.bash.timeout=30
+
+koder.tools.file.enabled=true
+koder.tools.file.max-file-size=10485760
+
+koder.tools.web-search.enabled=true
+koder.tools.web-search.max-results=10
+
+# ==================== MCP配置 ====================
+koder.mcp.enabled=true
+koder.mcp.auto-discover=true
+
+# ==================== 日志配置 ====================
+logging.level.root=INFO
+logging.level.io.leavesfly.koder=DEBUG
+logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss} - %msg%n
+logging.file.name=logs/koder.log
+logging.file.max-size=10MB
+logging.file.max-history=7

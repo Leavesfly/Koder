@@ -1,0 +1,56 @@
+# Koder测试环境配置
+
+spring:
+  main:
+    web-application-type: none
+    banner-mode: off
+
+koder:
+  # 测试环境使用模拟配置
+  config:
+    global-path: ./target/test-config/config.json
+    project-path: ./target/test-config/.koder.json
+
+  # 工具系统 - 测试环境启用所有工具
+  tools:
+    list-enabled: true
+
+  # LLM配置 - 测试环境可以使用mock
+  llm:
+    deepseek:
+      enabled: false
+      api-key: test-key
+      base-url: http://localhost:8888/mock
+      default-model: deepseek-chat
+      timeout: 10
+
+    qwen:
+      enabled: false
+      api-key: test-key
+      base-url: http://localhost:8888/mock
+      default-model: qwen-turbo
+      timeout: 10
+
+    ollama:
+      enabled: false
+      base-url: http://localhost:11434
+      default-model: llama2
+      timeout: 10
+
+  # MCP配置 - 测试环境禁用
+  mcp:
+    enabled: false
+
+  # Agent配置 - 测试环境使用测试代理
+  agents:
+    enabled: true
+    builtin-enabled: true
+    custom-agents-path: ./target/test-agents
+
+# 日志配置 - 测试环境最小化日志
+logging:
+  level:
+    root: WARN
+    io.leavesfly.koder: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss} %-5level - %msg%n"

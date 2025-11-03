@@ -1,0 +1,111 @@
+{
+  "_comment": "Koder全局配置文件模板 - 默认位置: ~/.koder/config.json",
+  
+  "llm": {
+    "default_provider": "deepseek",
+    "providers": {
+      "deepseek": {
+        "enabled": true,
+        "api_key": "${DEEPSEEK_API_KEY}",
+        "base_url": "https://api.deepseek.com",
+        "models": {
+          "default": "deepseek-chat",
+          "fast": "deepseek-chat",
+          "smart": "deepseek-reasoner"
+        },
+        "temperature": 0.7,
+        "max_tokens": 4096,
+        "timeout": 60
+      },
+      "qwen": {
+        "enabled": true,
+        "api_key": "${QWEN_API_KEY}",
+        "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "models": {
+          "default": "qwen-turbo",
+          "fast": "qwen-turbo",
+          "smart": "qwen-max"
+        },
+        "temperature": 0.7,
+        "max_tokens": 4096,
+        "timeout": 60
+      },
+      "ollama": {
+        "enabled": false,
+        "base_url": "http://localhost:11434",
+        "models": {
+          "default": "llama2",
+          "fast": "llama2",
+          "smart": "llama2"
+        },
+        "temperature": 0.7,
+        "max_tokens": 4096,
+        "timeout": 120
+      }
+    }
+  },
+  
+  "tools": {
+    "enabled": true,
+    "bash": {
+      "enabled": true,
+      "allow_dangerous_commands": false,
+      "blacklist": ["rm -rf /", "mkfs", "dd if=/dev/zero"],
+      "timeout": 30
+    },
+    "file": {
+      "enabled": true,
+      "max_file_size": 10485760,
+      "allowed_extensions": [".txt", ".md", ".json", ".yml", ".yaml", ".xml", ".properties", ".java", ".py", ".js", ".ts"],
+      "excluded_paths": ["/etc", "/sys", "/proc"]
+    },
+    "web_search": {
+      "enabled": true,
+      "provider": "bing",
+      "api_key": "${BING_SEARCH_API_KEY}",
+      "max_results": 10,
+      "timeout": 10
+    }
+  },
+  
+  "mcp": {
+    "enabled": true,
+    "auto_discover": true,
+    "config_path": "~/.koder/mcp_servers.json",
+    "servers": []
+  },
+  
+  "agents": {
+    "enabled": true,
+    "builtin_enabled": true,
+    "custom_agents_path": "~/.koder/agents",
+    "auto_watch": true
+  },
+  
+  "ui": {
+    "color_scheme": "auto",
+    "show_timestamps": true,
+    "markdown_rendering": true,
+    "syntax_highlighting": true
+  },
+  
+  "permission": {
+    "require_confirmation": true,
+    "auto_approve_read_operations": true,
+    "auto_approve_safe_operations": false,
+    "dangerous_operations": ["file_delete", "bash_sudo", "system_shutdown"]
+  },
+  
+  "cost": {
+    "tracking_enabled": true,
+    "budget_limit": 0,
+    "alert_threshold": 0.8
+  },
+  
+  "logging": {
+    "level": "INFO",
+    "file_path": "~/.koder/logs/koder.log",
+    "max_file_size": "10MB",
+    "max_history": 7
+  }
+}

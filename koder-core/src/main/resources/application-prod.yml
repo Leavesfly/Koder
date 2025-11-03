@@ -1,0 +1,66 @@
+# Koder生产环境配置
+
+spring:
+  jackson:
+    serialization:
+      indent-output: false  # 生产环境不需要格式化
+      
+koder:
+  ai:
+    # 生产环境使用通义千问
+    default-provider: qwen
+    
+    deepseek:
+      enabled: true
+      temperature: 0.5  # 生产环境降低温度，更稳定
+      max-tokens: 8192
+      timeout: 90
+    
+    qwen:
+      enabled: true
+      temperature: 0.5
+      max-tokens: 8192
+      timeout: 90
+    
+    ollama:
+      enabled: false  # 生产环境一般不使用本地模型
+
+  # 工具系统 - 生产环境更严格
+  tools:
+    bash:
+      enabled: true
+      allow-dangerous-commands: false
+      timeout: 30
+    
+    file:
+      enabled: true
+      max-file-size: 5242880  # 5MB
+      allowed-extensions: [".txt", ".md", ".json", ".yml", ".yaml", ".xml", ".properties"]
+    
+    web-search:
+      enabled: true
+      max-results: 5
+      timeout: 10
+
+  # MCP配置
+  mcp:
+    enabled: true
+    auto-discover: false  # 生产环境手动配置
+    servers: []
+
+  # 权限配置
+  permission:
+    require-confirmation: true
+    auto-approve-safe-operations: false
+
+# 日志配置 - 生产环境精简日志
+logging:
+  level:
+    root: WARN
+    io.leavesfly.koder: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level - %msg%n"
+  file:
+    name: logs/koder-prod.log
+    max-size: 50MB
+    max-history: 30

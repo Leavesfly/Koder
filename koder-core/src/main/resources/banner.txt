@@ -1,0 +1,9 @@
+
+  _  __          _           
+ | |/ /___   __| | ___ _ __ 
+ | ' // _ \ / _` |/ _ \ '__|
+ | . \ (_) | (_| |  __/ |   
+ |_|\_\___/ \__,_|\___|_|   
+                            
+ :: Koder AI Terminal Assistant ::  ${application.version:1.0.0}
+ :: Spring Boot ::                   ${spring-boot.version}
